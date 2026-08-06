@@ -89,19 +89,22 @@ def generate_dashboard():
     table_rows = []
     
     print(f"Processing {len(problems)} problems. Fetching structural metadata...")
+    count=0
     for num, slug, folder_path, folder_name in problems:
+        
         difficulty, language, date_str = parse_problem_metadata(folder_path, slug)
         stats[difficulty] = stats.get(difficulty, 0) + 1
-        
+        count+=1
         # Format the title strings cleanly
-        problem_title = slug.replace("-", " ").title()
-        problem_title = problem_title.replace("Of ", "of ").replace("In ", "in ").replace("And ", "and ").replace("To ", "to ")
-        
-        problem_link = f"https://leetcode.com/problems/{slug.lower()}/"
-        solution_link = f"./{folder_name}"
-        
-        row = f"| {num} | [{problem_title}]({problem_link}) | [{folder_name}]({solution_link}) | {difficulty} | {language} | {date_str} |"
-        table_rows.append(row)
+        if count<100:
+            problem_title = slug.replace("-", " ").title()
+            problem_title = problem_title.replace("Of ", "of ").replace("In ", "in ").replace("And ", "and ").replace("To ", "to ")
+            
+            problem_link = f"https://leetcode.com/problems/{slug.lower()}/"
+            solution_link = f"./{folder_name}"
+            
+            row = f"| {num} | [{problem_title}]({problem_link}) | [{folder_name}]({solution_link}) | {difficulty} | {language} | {date_str} |"
+            table_rows.append(row)
         
     total_solved = len(problems)
     current_time = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
